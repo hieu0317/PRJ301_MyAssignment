@@ -4,27 +4,28 @@
     Author     : admin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="CSS/WeekylyTimetable.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/WeeklyTimetable.css">              
     </head>
     <body>
         <div>
             <header>
-                <img src="img/fpt-university.png">
-                <img src="img/download-application-button-apple-app-store-free-vector.png">
-                <img src="img/download.png">
+                <img src="../img/fpt-university.jpg">
+                <img src="../img/download-application-button-apple-app-store-free-vector.jpg">
+                <img src="../img/download.jpg">
                 <p>FAP mobile app (myFAP) is ready at</p>
             </header>
             <div class="header-bar">
                 <a class="Home" href="">Home</a>
                 <p>View Schedule</p>
                 <div class="dropdown">
-                    <img id="dropbtn" src="img/128-1280406_view-user-icon-png-user-circle-icon-png.png">
+                    <img id="dropbtn" src="../img/128-1280406_view-user-icon-png-user-circle-icon-png.jpg">
                     <div class="dropdown-content">
                         <a href="#">Link 1</a>
                         <a href="#">Link 2</a>
@@ -36,25 +37,37 @@
         <h1>Activities for ....</h1>
         <table>
             <tr>
-                <th rowspan="2">
+                <th>
                     Year:2023 </br>
-                    <label for="Week">Week:</label>
-                    <select name="weeks" id="weeks">
-                        <option value="">
-                            week1
-                        </option>
-                        <option value="">w2</option>
-                        <option value="">w3</option>
-                    </select>
                 </th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
+                <c:forEach items="${requestScope.dates}" var="d">
+                    <th>${d}<br/><fmt:formatDate value="${d}" pattern="EEEE"/></th>
+                </c:forEach>
             </tr>
+             <c:forEach items="${requestScope.slots}" var="slot"> 
+                <tr>
+                    <td>
+                        Slot: ${slot.tid} </br>
+                        ${slot.tfrom} - ${slot.tto}
+                    </td>
+                    <c:forEach items="${requestScope.dates}" var="d">
+                        <td>
+                            <c:forEach items="${requestScope.s.groups}" var="g">
+                                <c:forEach items="${g.sessions}" var="ses">
+                                    <c:if test="${ses.date eq d and ses.timeSlot.tid eq slot.tid}">
+                                        
+                                            ${g.gname}(${g.course.code}) <br/>
+                                            ${ses.instructor.iname}-${ses.room.rname} <br/>
+                                            <c:if test="${ses.status}">
+                                                <font color="green">(attended)</font>
+                                            </c:if>
+                                    </c:if>
+                                </c:forEach>
+                            </c:forEach>
+                        </td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
 
         </table>
         <div class="Note">

@@ -10,14 +10,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-            <link rel="stylesheet" href="CSS/TakeAttendance.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/TakeAttendance.css">
     </head>
     <body>
         <div>
             <header>
-                <img src="img/fpt-university.png" >
-                <img src="img/download-application-button-apple-app-store-free-vector.png">
-                <img src="img/download.png">
+                <img src="../img/fpt-university.png" >
+                <img src="../img/download-application-button-apple-app-store-free-vector.png">
+                <img src="../img/download.png">
                 <p>FAP mobile app (myFAP) is ready at</p>
             </header>
             <div class="header-bar">
