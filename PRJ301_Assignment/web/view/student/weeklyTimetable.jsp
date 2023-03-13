@@ -35,12 +35,17 @@
             </div>
         </div>
         <h1>Activities for ....</h1>
+        <form action="timetable" class="inputDate" method="GET">
+            From:<input type="text" name="from"> - To:<input type="text" name="to">
+            <input type="submit" value="Search">
+        </form>
         <table>
             <tr>
                 <th>
-                    Year:2023 </br>
+                        Year:2023 </br>
+                   
                 </th>
-                <c:forEach items="${requestScope.dates}" var="d">
+               <c:forEach items="${requestScope.dates}" var="d">
                     <th>${d}<br/><fmt:formatDate value="${d}" pattern="EEEE"/></th>
                 </c:forEach>
             </tr>
@@ -83,6 +88,6 @@
                 thoại: <span class="PhoneNumber">(024)7308.13.13</span></p>
             <p> © Powered by <span>University</span> | <span>CMS</span> | <span>library</span> | <span>books24x7</span></p>
         </div>
-
+    
     </body>
 </html>

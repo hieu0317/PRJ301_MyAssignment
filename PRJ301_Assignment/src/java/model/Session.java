@@ -28,6 +28,7 @@ public class Session {
     }
 
     public boolean isStatus() {
+        
         return status;
     }
 

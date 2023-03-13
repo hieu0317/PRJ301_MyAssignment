@@ -1,6 +1,14 @@
 body {
     margin: 0;
 }
+
+
+.inputDate{
+    margin-left: 35%;
+    margin-bottom: 20px;
+}
+
+
 header {
     position: relative;
     display: flex;

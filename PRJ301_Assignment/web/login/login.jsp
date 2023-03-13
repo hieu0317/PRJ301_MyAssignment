@@ -7,20 +7,30 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <div class="login-container">
-            <label for="email"> Email:</label> <br/>
-            <input type="text" placeholder="Enter your school emaill"> <br/>
-            <label for="password"> Password: </label> <br/>
-            <input type="password" placeholder="Enter your password"> <br/>
-            <label>
-                <input type="checkbox" checked="checked" name="remember"> Remember me
-            </label> <br/>
-            <button type="submit">Login</button>           
-        </div>
-    </body>
+        <head>
+            <meta charset="UTF-8">
+            <title>Login</title>
+            <link rel="stylesheet"  href="${pageContext.request.contextPath}/CSS/login.css">
+        </head>
+        <body>
+            <div class="login-container">
+                <h2>Login</h2>
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <select name="campus" id="">
+                        <option value="">Hòa Lạc</option>
+                        <option value="">Hồ Chí Minh</option>
+                    </select> </br>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <img src="img/trung-dung-ki-tuc-xa-sinh-vien-_dh_fpt.jpg" alt="Background Image">
+        </body>
 </html>
