@@ -1,13 +1,6 @@
 body {
     margin: 0;
 }
-
-
-.inputDate {
-    margin-left: 35%;
-    margin-bottom: 20px;
-}
-
 header {
     position: relative;
     display: flex;
@@ -93,6 +86,11 @@ header img:nth-child(3){
 
   .header-bar p{
     margin-left: 10px;
+  }
+
+  .inputDate{
+    margin-left: 35%;
+    margin-bottom: 20px;
   }
 
   .header-bar{
