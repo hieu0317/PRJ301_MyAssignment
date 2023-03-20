@@ -32,6 +32,7 @@
                 </div>
             </div>
             <a href="../../student/timetable">View Weekly Timetable</a> </br>
+            <a href="../../student/reportAttend">View Attendance Report</a> </br>
             <a href="../../logout">Logout</a>
         </div>
         

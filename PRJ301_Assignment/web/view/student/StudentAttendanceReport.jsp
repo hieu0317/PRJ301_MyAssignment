@@ -40,40 +40,45 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>                      
         <h1>Report</h1>
-
+        <a href="reportAttend?cid=1">JPD123</a> ,
+        <a href="reportAttend?cid=2">IOT102</a> ,
+        <a href="reportAttend?cid=3">MAS291</a> ,
+        <a href="reportAttend?cid=4">PRJ301</a>
+        
+        <c:if test="${requestScope.ses ne null}">
         <table>
             <tr>
-                <td>
+                <th>
                     No
-                </td>
-                <td>
+                </th>
+                <th>
                     Date
-                </td>
-                <td>
+                </th>
+                <th>
                     Slot
-                </td>
-                <td>
+                </th>
+                <th>
                     Room
-                </td>
-                <td>
+                </th>
+                <th>
                     Instructor
-                </td>
-                <td>
+                </th>
+                <th>
                     Group Name
-                </td>
-                <td>
+                </th>
+                <th>
                     Attendance Status
-                </td>
-                <td>
+                </th>
+                <th>
                     Instructor's Comment
-                </td>
+                </th>
                 
             </tr>
              
-                <tr>
                     <c:forEach items="${requestScope.ses}" var="ses" varStatus="loop">
+                         <tr>
                             <td>
                                 ${loop.index + 1}
                             </td>
@@ -101,18 +106,19 @@
                                         <font color="green">(attended)</font>
                                     </c:if>
                                     <c:if test="${ses.attendance.getStatus() eq false}">
-                                        font color="red">(absent)</font>
+                                        <font color="red">(absent)</font>
                                     </c:if>
                                 </c:if>
                             </td>
                             <td>
                                  ${ses.attendance.description}
                             </td>
-                           
+                        </tr>   
                     </c:forEach>   
-                </tr>
+           
 
         </table>
+        </c:if>
         <div class="Note">
             <h2>More note/Chú thích thêm:</h2>
             <p> <span class="attend">(attended)</span>: HieuVMHE172039 had attended this activity / Vũ Minh Hiếu đã tham gia
