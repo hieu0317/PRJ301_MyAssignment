@@ -22,7 +22,7 @@ import model.User;
  *
  * @author admin
  */
-public class ReportController extends BasedRequiredAuthenticationController{
+public class StudentReportController extends BasedRequiredAuthenticationController{
     
      protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
             throws ServletException, IOException {

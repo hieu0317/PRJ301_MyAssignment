@@ -24,7 +24,11 @@ import model.TimeSlot;
  * @author admin
  */
 public class InstructorDBContext extends DBContext<Instructor>{
-
+    
+//    public ArrayList<Student> getSessionReport(int cid){
+//        
+//    }
+//    
     public Instructor getTimeTable(int InsID, Date from, Date to) {
         Instructor instructor = null;
         PreparedStatement stm = null;

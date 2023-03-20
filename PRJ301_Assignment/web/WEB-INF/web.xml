@@ -26,7 +26,7 @@
     </servlet>
     <servlet>
         <servlet-name>StudentAttendanceReport</servlet-name>
-        <servlet-class>controller.student.ReportController</servlet-class>
+        <servlet-class>controller.student.StudentReportController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableController</servlet-name>
