@@ -18,7 +18,7 @@ import model.Student;
  * @author admin
  */
 public class AttendanceDBContext extends DBContext<Attendance> {
-
+    
     public ArrayList<Attendance> getAttendancesBySession(int sessionid) {
         String sql = "SELECT s.StudentID,s.LastName,s.FirstName,\n"
                 + "                a.aid,\n"

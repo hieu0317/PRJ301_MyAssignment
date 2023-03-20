@@ -81,7 +81,6 @@
                                                     <font color="red">(absent)</font>
                                                 </c:if>
                                             </c:if>
-         
                                     </c:if>
                                 </c:forEach>
                             </c:forEach>

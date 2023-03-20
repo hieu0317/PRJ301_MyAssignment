@@ -5,7 +5,6 @@
 package model;
 
 import java.sql.Date;
-import model.Group;
 import java.util.ArrayList;
 
 /**

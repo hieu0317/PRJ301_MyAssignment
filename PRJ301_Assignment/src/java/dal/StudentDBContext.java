@@ -25,7 +25,86 @@ import model.TimeSlot;
  * @author admin
  */
 public class StudentDBContext extends DBContext<Student>{
+    
+     public ArrayList<Session> getCourseReport(int sid, int cid){
+        ArrayList<Session> sessions = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT distinct ses.SessionID,ses.Date,a.aid,a.status,a.description\n" +
+"                ,gr.GroupID,gr.GName,c.CourseID,c.CName,c.Code,i.InstructorName\n" +
+"                 FROM Session ses INNER JOIN [Group] gr on gr.GroupID = ses.GroupID\n" +
+"							      INNER JOIN [TimeSlot] t on t.TimeSlotID = ses.TimeSlotID\n" +
+"								  INNER JOIN [Room] r on r.RoomID = ses.RoomID\n" +
+"								  INNER JOIN Instructor i on i.InstructorID = ses.InstructorID\n" +
+"								  INNER JOIN [StudentGroup] sg on sg.GroupID = ses.GroupID\n" +
+"								  INNER JOIN [Student] s on s.StudentID = sg.StudentID\n" +
+"								  INNER JOIN [Course] c on c.CourseID = gr.GroupID\n" +
+"								  INNER JOIN [Attendance] a on a.sesid = ses.SessionID and a.sid = s.StudentID\n" +
+"								  WHERE s.StudentID=? and c.CourseID= ? ORDER BY gr.GroupID,ses.Date;
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, sid);
+            stm.setInt(2, cid);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+              
+//                Student stu = new Student();
+//                stu.setSid(rs.getInt("StudentID"));
+//                stu.setLname(rs.getString("LastName"));
+//                stu.setFname(rs.getString("FirstName"));
+//                stu.setsRollNumber(rs.getString("StudentRollNumber"));
+                Session ses = new Session();
+                ses.setSesid(rs.getInt("SessionID"));
+                ses.setDate(rs.getDate("Date"));     
+                
+                Group gr = new Group();
+                gr.setGid(rs.getInt("GroupID"));
+                gr.setGname(rs.getString("GName"));
+                Course c = new Course();
+                c.setCid(rs.getInt("CourseID"));
+                c.setCname(rs.getString("CName"));
+                gr.setCourse(c);
+                ses.setGroup(gr);
+                
+                Instructor i = new Instructor();
+                i.setiId(rs.getInt("InstructorID"));
+                i.setIname(rs.getString("InstructorName"));
+                ses.setInstructor(i);
+                
+                Room r = new Room();
+                r.setRid(rs.getInt("RoomID"));
+                r.setRname(rs.getString("RName"));
+                ses.setRoom(r);
+                
+                TimeSlot t = new TimeSlot();
+                t.setTid(rs.getInt("TimeSlotID"));
+                t.setTfrom(rs.getString("TimeFrom"));
+                t.setTto(rs.getString("TimeTo"));
+                ses.setTimeSlot(t);
+                
+                Attendance a = new Attendance();
+                a.setId(rs.getInt("aid"));
+                a.setDescription(rs.getString("description"));
+                Boolean b = rs.getObject("Status") != null ? rs.getBoolean("Status") : null;
+                a.setStatus(b);
+                ses.setAttendance(a);
+                
+                sessions.add(ses);
 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return sessions;
+    }
+    
      public Student getTimeTable(int sid, Date from, Date to) {
         Student student = null;
         PreparedStatement stm = null;

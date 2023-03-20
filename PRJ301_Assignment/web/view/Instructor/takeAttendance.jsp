@@ -73,7 +73,7 @@
             <div class="Save">
                 <input type="hidden" name="sessionid" value="${param.id}"/>
                 <input type="submit" value="Save"/>
-                <a class="cancle" href="timetable">Cancle</a>
+                <a class="cancle" href="timetable">Cancel</a>
             </div>
         </form>
         <div class="rooter">
