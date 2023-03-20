@@ -4,7 +4,7 @@
  */
 package controller.instuctor;
 
-import controller.authentication.BasedRequiredAuthenticationController;
+import controller.authentication.BasedRequiredTeacherAuthenticationController;
 import dal.AttendanceDBContext;
 import dal.InstructorDBContext;
 import dal.StudentDBContext;
@@ -28,7 +28,7 @@ import util.DateTimeHelper;
  *
  * @author admin
  */
-public class TimeTableController extends BasedRequiredAuthenticationController {
+public class TimeTableController extends BasedRequiredTeacherAuthenticationController {
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
             throws ServletException, IOException {

@@ -15,11 +15,11 @@ import model.User;
  *
  * @author admin
  */
-public abstract class BasedRequiredAuthenticationController extends HttpServlet {
+public abstract class BasedRequiredTeacherAuthenticationController extends HttpServlet {
 
     private boolean isAuthenticated(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        if(user.isIsStudent()){
+        if(!user.isIsStudent()){
             return true;
         }
         return false;

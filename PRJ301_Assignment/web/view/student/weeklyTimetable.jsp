@@ -68,16 +68,16 @@
                                 <c:forEach items="${g.sessions}" var="ses">
                                     <c:if test="${ses.date eq d and ses.timeSlot.tid eq slot.tid}">
                                         
-                                            ${g.gname}(${g.course.code}) ${ses.status == null ? "null" : "not null"} <br/>
+                                            ${g.gname}(${g.course.code}) <br/>
                                             ${ses.instructor.iname}-${ses.room.rname} <br/>
-                                            <c:if test="${ses.getStatus() eq null}">
+                                            <c:if test="${ses.attendance.getStatus() eq null}">
                                                 <font color="red">(not yet) </font>
                                             </c:if >
-                                                <c:if test="${ses.getStatus() ne null}">
-                                                    <c:if test="${ses.getStatus()}">
+                                                <c:if test="${ses.attendance.getStatus() ne null}">
+                                                    <c:if test="${ses.attendance.getStatus()}">
                                                     <font color="green">(attended)</font>
                                                 </c:if>
-                                                <c:if test="${ses.getStatus() eq false}">
+                                                <c:if test="${ses.attendance.getStatus() eq false}">
                                                     <font color="red">(absent)</font>
                                                 </c:if>
                                             </c:if>

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Attendance;
 import model.Course;
 import model.Group;
 import model.Instructor;
@@ -30,17 +31,18 @@ public class StudentDBContext extends DBContext<Student>{
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            String sql = "SELECT s.StudentID,s.LastName,s.FirstName,s.StudentRollNumber,s.Gender,s.Dob,ses.SessionID,ses.Date,ses.Status\n"
-                    + ",g.GroupID,g.GName,c.CourseID,c.CName,c.Code,r.RoomID,r.RName,i.InstructorID,i.InstructorRollNumber,i.InstructorName"
-                    + ",t.TimeSlotID,t.TimeFrom,t.TimeTo\n"
-                    + "FROM Student s INNER JOIN StudentGroup sg ON s.StudentID = sg.StudentID\n"
-                    + "                   INNER JOIN [Group] g ON g.GroupID = sg.GroupID\n"
-                    + "                   INNER JOIN [Course] c ON g.CourseID = c.CourseID\n"
-                    + "                   INNER JOIN [Session] ses ON g.GroupID = ses.GroupID\n"
-                    + "                   INNER JOIN [TimeSlot] t ON t.TimeSlotID = ses.TimeSlotID\n"
-                    + "                   INNER JOIN [Room] r ON r.RoomID = ses.RoomID\n"
-                    + "                   INNER JOIN Instructor i ON i.InstructorID = ses.InstructorID\n"
-                    + "			  WHERE s.StudentID = ? AND ses.Date>= ? AND ses.Date <= ? ORDER BY s.StudentID,g.GroupID";
+            String sql = "SELECT distinct s.StudentID,s.LastName,s.FirstName,s.StudentRollNumber,s.Gender,s.Dob,ses.SessionID,ses.Date,a.aid,a.status,a.description\n"
+                    + "                   ,g.GroupID,g.GName,c.CourseID,c.CName,c.Code,r.RoomID,r.RName,i.InstructorID,i.InstructorRollNumber,i.InstructorName\n"
+                    + "                    ,t.TimeSlotID,t.TimeFrom,t.TimeTo\n"
+                    + "                    FROM Student s INNER JOIN StudentGroup sg ON s.StudentID = sg.StudentID\n"
+                    + "                                       INNER JOIN [Group] g ON g.GroupID = sg.GroupID\n"
+                    + "                                      INNER JOIN [Course] c ON g.CourseID = c.CourseID\n"
+                    + "                                      INNER JOIN [Session] ses ON g.GroupID = ses.GroupID\n"
+                    + "                                       INNER JOIN [TimeSlot] t ON t.TimeSlotID = ses.TimeSlotID\n"
+                    + "                                      INNER JOIN [Room] r ON r.RoomID = ses.RoomID\n"
+                    + "                                      INNER JOIN [Attendance] a ON ses.SessionID = a.sesid and s.StudentID = a.sid\n"
+                    + "                                      INNER JOIN Instructor i ON i.InstructorID = ses.InstructorID\n"
+                    + "                    		  WHERE s.StudentID = ? AND ses.Date>= ? AND ses.Date <= ? ORDER BY s.StudentID,g.GroupID";
             stm = connection.prepareStatement(sql);
             stm.setInt(1, sid);
             stm.setDate(2, from);
@@ -74,9 +76,7 @@ public class StudentDBContext extends DBContext<Student>{
                 }
                 Session ses = new Session();
                 ses.setSesid(rs.getInt("SessionID"));
-                ses.setDate(rs.getDate("Date"));
-                Boolean b = rs.getObject("Status") != null ? rs.getBoolean("Status") : null; 
-                ses.setStatus(b);        
+                ses.setDate(rs.getDate("Date"));      
                 ses.setGroup(currentGroup);
                 
                 Instructor i = new Instructor();
@@ -96,6 +96,13 @@ public class StudentDBContext extends DBContext<Student>{
                 t.setTfrom(rs.getString("TimeFrom"));
                 t.setTto(rs.getString("TimeTo"));
                 ses.setTimeSlot(t);
+                
+                Attendance a = new Attendance();
+                a.setId(rs.getInt("aid"));
+                a.setDescription(rs.getString("description"));
+                Boolean b = rs.getObject("Status") != null ? rs.getBoolean("Status") : null;
+                a.setStatus(b);
+                ses.setAttendance(a);
                 
                 currentGroup.getSessions().add(ses);
 

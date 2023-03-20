@@ -12,12 +12,22 @@ import java.sql.Date;
  */
 public class Session {
     private int sesid;
-    private Boolean status;
     private Room room;
     private Group group;
     private Instructor instructor;
     private TimeSlot timeSlot;
     private Date date;
+    private Attendance attendance;
+
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Attendance attendance) {
+        this.attendance = attendance;
+    }
+    
+    
 
     public int getSesid() {
         return sesid;
@@ -25,14 +35,6 @@ public class Session {
 
     public void setSesid(int sesid) {
         this.sesid = sesid;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
     }
 
     
