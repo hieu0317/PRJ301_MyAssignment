@@ -48,14 +48,19 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         UserDBContext db = new UserDBContext();
         User user =  db.get(username, password);
-        if(user !=null)
-        {
-            request.getSession().setAttribute("user", user);
-            response.getWriter().println("Login successful!");
+        if(user != null )
+        {   
+            if(user.isIsStudent()){
+                request.getSession().setAttribute("user", user);
+                response.sendRedirect("view/home/StudentHome.jsp");
+            }else{
+                request.getSession().setAttribute("user", user);
+                response.sendRedirect("view/home/InstructorHome.jsp");
+            }
         }
         else
         {
-            response.getWriter().println("Login failed");
+            response.sendRedirect("login/login_failed.jsp");
         }
     }
 

@@ -31,7 +31,7 @@ public abstract class BasedRequiredAuthenticationController extends HttpServlet 
         }
         else
         {
-            resp.getWriter().println("access denied!");
+            resp.sendRedirect("../login");
         }
     }
     
@@ -46,7 +46,7 @@ public abstract class BasedRequiredAuthenticationController extends HttpServlet 
         }
         else
         {
-            resp.getWriter().println("access denied!");
+            resp.sendRedirect("../login");
         }
     }
     protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException;

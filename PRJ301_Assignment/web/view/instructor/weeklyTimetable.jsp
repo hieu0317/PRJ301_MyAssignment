@@ -1,6 +1,6 @@
 <%-- 
     Document   : weeklyTimetable
-    Created on : Mar 3, 2023, 7:40:48 PM
+    Created on : Mar 18, 2023, 5:37:50 PM
     Author     : admin
 --%>
 
@@ -22,21 +22,13 @@
                 <p>FAP mobile app (myFAP) is ready at</p>
             </header>
             <div class="header-bar">
-                <a class="Home" href="../view/home/StudentHome.jsp">Home</a>
+                <a class="Home" href="../view/home/InstructorHome.jsp">Home</a>
                 <p>View Schedule</p>
                 <div class="dropdown">
                     <img id="dropbtn" src="../img/128-1280406_view-user-icon-png-user-circle-icon-png.jpg">
                     <div class="dropdown-content">
-                        <a href="#">${requestScope.s.lname} ${s.fname}</a>
-                        <a href="#">${requestScope.s.sRollNumber} </a>
-                        <a href="#">
-                            <c:if test="${requestScope.s.gender}">
-                             Male
-                            </c:if>
-                             <c:if test="${requestScope.s.gender eq false}">
-                             Female
-                            </c:if>
-                        </a>
+                        <a href="#">${requestScope.in.iname}</a>
+                        <a href="#">${requestScope.s.iRollNumber} </a>
                     </div>
                 </div>
             </div>
@@ -64,24 +56,13 @@
                     </td>
                     <c:forEach items="${requestScope.dates}" var="d">
                         <td>
-                            <c:forEach items="${requestScope.s.groups}" var="g">
+                            <c:forEach items="${requestScope.in.groups}" var="g">
                                 <c:forEach items="${g.sessions}" var="ses">
                                     <c:if test="${ses.date eq d and ses.timeSlot.tid eq slot.tid}">
                                         
-                                            ${g.gname}(${g.course.code}) ${ses.status == null ? "null" : "not null"} <br/>
-                                            ${ses.instructor.iname}-${ses.room.rname} <br/>
-                                            <c:if test="${ses.getStatus() eq null}">
-                                                <font color="red">(not yet) </font>
-                                            </c:if >
-                                                <c:if test="${ses.getStatus() ne null}">
-                                                    <c:if test="${ses.getStatus()}">
-                                                    <font color="green">(attended)</font>
-                                                </c:if>
-                                                <c:if test="${ses.getStatus() eq false}">
-                                                    <font color="red">(absent)</font>
-                                                </c:if>
-                                            </c:if>
-         
+                                            ${g.gname} - ${g.course.code}<br/>
+                                            ${ses.room.rname} <br/>
+                                            <a href="takeAttend?id=${ses.sesid}">Take Attend</a>
                                     </c:if>
                                 </c:forEach>
                             </c:forEach>
@@ -91,14 +72,6 @@
             </c:forEach>
 
         </table>
-        <div class="Note">
-            <h2>More note/Chú thích thêm:</h2>
-            <p> <span class="attend">(attended)</span>: HieuVMHE172039 had attended this activity / Vũ Minh Hiếu đã tham gia
-                hoạt động này</p>
-            <p> <span class="absent">(absent)</span>: HieuVMHE172039 had NOT attended this activity / Vũ Minh Hiếu đã vắng
-                mặt buổi này</p>
-            <p> (-): no data was given / chưa có dữ liệu</p>
-        </div>
         <div class="rooter">
             <p> Mọi góp ý, thắc mắc xin liên hệ: Phòng dịch vụ sinh viên: Email: <span>dichvusinhvien@fe.edu.vn.</span> Điện
                 thoại: <span class="PhoneNumber">(024)7308.13.13</span></p>
@@ -107,3 +80,4 @@
     
     </body>
 </html>
+

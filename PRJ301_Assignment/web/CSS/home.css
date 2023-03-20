@@ -7,6 +7,16 @@ header {
     width: 100%;
 }
 
+
+ .header-bar{
+    position: relative;
+    padding-left: 20px;
+    padding-bottom: 15px;
+    width: 100%;
+    background-color: gainsboro;
+    display: flex;
+}  
+
 header p {
     position: absolute;
     top: 0;
@@ -82,54 +92,6 @@ header img:nth-child(3){
     padding-right: 5px;
     border-right: 3px solid black;
     margin-top: 15px;
-  }
-
-  .header-bar p{
-    margin-left: 10px;
-  }
-
-  .header-bar{
-    position: relative;
-    padding-left: 20px;
-    width: 100%;
-    background-color: gainsboro;
-    display: flex;
-  }
-
-  table {
-    width: 85%;
-    margin-left: 7%;
-  }
-
-  h2{
-    text-align: center;
-    margin-left:7%;
-  }
-  table, th, td {
-    border: 1px solid black;
-  }
-
-  th {
-    background-color: rgb(141, 243, 243);
-  }
-
-  td {
-    background-color: #ddd;
-    text-align: center;
-  }
-  
-  .cancle{
-      text-decoration: none;
-      height: 20px;
-      width: 46px;
-      background-color:  rgb(192, 191, 189) ;
-      border: 1px solid black;
-  }
-  
-  .Save {
-    display: flex;
-    margin-top: 20px;
-    margin-left: 85%;
   }
 
   span {

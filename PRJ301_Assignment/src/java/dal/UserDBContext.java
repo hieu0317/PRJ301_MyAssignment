@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Instructor;
 import model.User;
 import model.Student;
 
@@ -22,7 +23,7 @@ public class UserDBContext extends DBContext<User>{
     public User get(String username, String password) {
         PreparedStatement stm = null;
         ResultSet rs = null;
-        String sql = "select Username, Password ,Campus, StudentID from [User]\n"
+        String sql = "select Username, Password ,Campus, StudentID, InstructorID, isStudent from [User]\n"
                 + "  WHERE [username] = ?\n"
                 + "  AND [password] = ?";
         try {
@@ -35,10 +36,14 @@ public class UserDBContext extends DBContext<User>{
             {
                 User s = new User();
                 Student student = new Student();
+                Instructor instructor = new Instructor();
                 s.setUsername(rs.getString("Username"));
                 s.setCampus(rs.getString("Campus"));
                 student.setSid(rs.getInt("StudentID"));
+                instructor.setiId(rs.getInt("InstructorID"));
+                s.setInstructor(instructor);
                 s.setStudent(student);
+                s.setIsStudent(rs.getBoolean("isStudent"));
                 return s;
             }
         } catch (SQLException ex) {
@@ -50,7 +55,7 @@ public class UserDBContext extends DBContext<User>{
                 stm.close();
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return null;

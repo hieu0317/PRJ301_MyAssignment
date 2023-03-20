@@ -75,7 +75,8 @@ public class StudentDBContext extends DBContext<Student>{
                 Session ses = new Session();
                 ses.setSesid(rs.getInt("SessionID"));
                 ses.setDate(rs.getDate("Date"));
-                ses.setStatus(rs.getBoolean("Status"));
+                Boolean b = rs.getObject("Status") != null ? rs.getBoolean("Status") : null; 
+                ses.setStatus(b);        
                 ses.setGroup(currentGroup);
                 
                 Instructor i = new Instructor();
@@ -105,7 +106,6 @@ public class StudentDBContext extends DBContext<Student>{
             try {
                 rs.close();
                 stm.close();
-                connection.close();
             } catch (SQLException ex) {
                 Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -130,7 +130,37 @@ public class StudentDBContext extends DBContext<Student>{
 
     @Override
     public Student get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select StudentID, StudentRollNumber, LastName, FirstName, Dob, Gender from Student\n"
+                    + "where StudentID = ?";
+            boolean a = connection.isClosed();
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, id);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                Student s = new Student();
+                s.setSid(rs.getInt("StudentID"));
+                s.setsRollNumber(rs.getString("StudentRollNumber"));
+                s.setLname(rs.getString("LastName"));
+                s.setFname(rs.getString("FirstName"));
+                s.setGender(rs.getBoolean("Gender"));
+                s.setDob(rs.getDate("Dob"));
+                return s;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
     @Override

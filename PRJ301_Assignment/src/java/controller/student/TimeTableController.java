@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller;
+package controller.student;
 
 import controller.authentication.BasedRequiredAuthenticationController;
 import dal.StudentDBContext;
@@ -27,52 +27,52 @@ import util.DateTimeHelper;
  *
  * @author admin
  */
-public class TimeTableController extends HttpServlet{
-    
-  
-    protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
-    throws ServletException, IOException {
+public class TimeTableController extends BasedRequiredAuthenticationController {
+
+    protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
+            throws ServletException, IOException {
         HttpSession session = req.getSession();
         User u = (User) session.getAttribute("user");
-        Date from = null;
-        Date to = null;
-        if(from == null || to == null){
+        String from_raw = req.getParameter("from");
+        String to_raw = req.getParameter("to");
+        Date from ;
+        Date to;
+        if (from_raw == null || to_raw == null) {
             Format formatter = new SimpleDateFormat("YYYY-MM-dd");
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek()+1);
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek() + 1);
             String firstDayOfWeek = formatter.format(calendar.getTime());
             from = Date.valueOf(firstDayOfWeek);
             calendar.add(Calendar.DATE, 6);
             String lastDayOfWeek = formatter.format(calendar.getTime());
             to = Date.valueOf(lastDayOfWeek);
-        }else{
+        } else {
             from = Date.valueOf(req.getParameter("from"));
             to = Date.valueOf(req.getParameter("to"));
         }
         TimeSlotDBContext timeDB = new TimeSlotDBContext();
         ArrayList<TimeSlot> slots = timeDB.all();
         req.setAttribute("slots", slots);
-        
+
         ArrayList<Date> dates = DateTimeHelper.getListDate(from, to);
         req.setAttribute("dates", dates);
-        
+
         StudentDBContext stuDB = new StudentDBContext();
-        Student student = stuDB.getTimeTable(1, from, to);
+        Student student = stuDB.getTimeTable(u.getStudent().getSid(), from, to);
         req.setAttribute("s", student);
-        
+
         req.getRequestDispatcher("../view/student/weeklyTimetable.jsp").forward(req, resp);
-        
-        
-    } 
-    
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
+
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req, resp);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        processRequest(req, resp, user);
     }
-   
-}  
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        processRequest(req, resp, user);
+    }
+
+}

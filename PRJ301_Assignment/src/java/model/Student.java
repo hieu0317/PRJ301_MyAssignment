@@ -20,7 +20,7 @@ public class Student {
     private Date Dob;
     private boolean gender;
     private ArrayList<Group> groups = new ArrayList<>();
-
+    
     public int getSid() {
         return sid;
     }

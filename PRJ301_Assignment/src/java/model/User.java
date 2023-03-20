@@ -14,7 +14,18 @@ public class User {
     private String password;
     private String campus;
     private Student student;
+    private boolean isStudent;
     private Instructor instructor;
+
+    public boolean isIsStudent() {
+        return isStudent;
+    }
+
+    public void setIsStudent(boolean isStudent) {
+        this.isStudent = isStudent;
+    }
+    
+    
 
     public int getUserid() {
         return userid;

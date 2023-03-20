@@ -14,8 +14,16 @@ public class Instructor {
     private int iId;
     private String iname;
     private String iRollNumber;
-    private ArrayList<Session> sessions = new ArrayList<>();
+    private ArrayList<Group> groups = new ArrayList<>();
 
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+    }
+    
     public int getiId() {
         return iId;
     }
@@ -38,17 +46,5 @@ public class Instructor {
 
     public void setiRollNumber(String iRollNumber) {
         this.iRollNumber = iRollNumber;
-    }
-
-    public ArrayList<Session> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(ArrayList<Session> sessions) {
-        this.sessions = sessions;
-    }
-    
-    
-    
-    
+    } 
 }
