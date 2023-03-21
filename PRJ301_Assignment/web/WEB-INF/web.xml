@@ -28,6 +28,10 @@
         <servlet-name>StudentAttendanceReport</servlet-name>
         <servlet-class>controller.student.StudentReportController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GroupReportController</servlet-name>
+        <servlet-class>controller.instuctor.GroupReportController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TimeTableController</servlet-name>
         <url-pattern>/student/timetable</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>StudentAttendanceReport</servlet-name>
         <url-pattern>/student/reportAttend</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GroupReportController</servlet-name>
+        <url-pattern>/instructor/reportAttend</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

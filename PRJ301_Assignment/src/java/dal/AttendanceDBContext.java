@@ -11,13 +11,69 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Attendance;
+import model.Group;
+import model.Session;
 import model.Student;
+import model.TimeSlot;
 
 /**
  *
  * @author admin
  */
 public class AttendanceDBContext extends DBContext<Attendance> {
+    
+    public ArrayList<Attendance> getGroupStatus(int gid) {
+        ArrayList<Attendance> atts = new ArrayList<>();
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+             String sql = " SELECT s.StudentID,s.FirstName,s.LastName,s.StudentRollNumber,gr.GroupID,gr.Gname,ses.TimeSlotID,ses.SessionId,a.aid,a.Status FROM Student s\n"
+                    + "                                LEFT JOIN [StudentGroup] sg ON s.StudentID = sg.StudentID\n"
+                    + "                                LEFT JOIN [Group] gr ON gr.GroupID = sg.GroupID\n"
+                    + "                                LEFT JOIN Course c on c.CourseID = gr.CourseID\n"
+                    + "                                LEFT JOIN [Session] ses ON ses.GroupID = gr.GroupID\n"
+                    + "                                LEFT JOIN [Attendance] a ON ses.sessionid = a.sesid AND s.StudentID = a.sid\n"
+                    + "                                LEFT JOIN Instructor i on ses.InstructorID = i.InstructorID\n"
+                    + "                                WHERE gr.GroupID = ?";
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, gid);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                Attendance a = new Attendance();
+                a.setId(rs.getInt("aid"));
+                Boolean b = rs.getObject("Status") != null ? rs.getBoolean("Status") : null;
+                a.setStatus(b);
+
+                Session ses = new Session();
+                ses.setSesid(rs.getInt("SessionID"));
+                
+                TimeSlot t = new TimeSlot();
+                t.setTid(rs.getInt("TimeSlotID"));
+                ses.setTimeSlot(t);
+                
+                Group gr = new Group();
+                gr.setGid(rs.getInt("GroupID"));
+                Student stu = new Student();
+                stu.setSid(rs.getInt("StudentID"));
+                stu.setLname(rs.getString("LastName"));
+                stu.setFname(rs.getString("FirstName"));
+                stu.setsRollNumber(rs.getString("StudentRollNumber"));
+                a.setStudent(stu);
+                atts.add(a);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                rs.close();
+                stm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(StudentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return atts;
+
+    }
     
     public ArrayList<Attendance> getAttendancesBySession(int sessionid) {
         String sql = "SELECT s.StudentID,s.LastName,s.FirstName,\n"

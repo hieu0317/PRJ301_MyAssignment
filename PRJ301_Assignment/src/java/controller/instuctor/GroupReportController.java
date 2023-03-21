@@ -2,19 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package controller.student;
+package controller.instuctor;
 
-import com.sun.beans.editors.IntegerEditor;
-import controller.authentication.BasedRequiredAuthenticationController;
+import controller.authentication.BasedRequiredTeacherAuthenticationController;
+import dal.AttendanceDBContext;
 import dal.SessionDBContext;
 import dal.StudentDBContext;
-import dal.TimeSlotDBContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import model.Attendance;
 import model.Session;
 import model.Student;
 import model.User;
@@ -23,25 +23,28 @@ import model.User;
  *
  * @author admin
  */
-public class StudentReportController extends BasedRequiredAuthenticationController{
+public class GroupReportController extends BasedRequiredTeacherAuthenticationController{
     
-     protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
+    protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
             throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        User u = (User) session.getAttribute("user");
-        int cid_raw = Integer.parseInt(req.getParameter("cid"));
+        int raw_gid = Integer.parseInt(req.getParameter("gid"));
+        
+        SessionDBContext sesDB = new SessionDBContext();
+        ArrayList<Session> sessions = sesDB.getAllByGroupID(raw_gid);
+        req.setAttribute("ses", sessions);
    
         StudentDBContext stuDB = new StudentDBContext();
-        SessionDBContext sesDB = new SessionDBContext();
-        Student student = stuDB.get(user.getStudent().getSid());
-        req.setAttribute("student", student);
-        ArrayList<Session> sessions = sesDB.getCourseReport(user.getStudent().getSid(), cid_raw);
-        req.setAttribute("ses", sessions);
+        ArrayList<Student> students = stuDB.studentByGroupID(raw_gid);
+        req.setAttribute("students", students);
+        
+        AttendanceDBContext atDB = new AttendanceDBContext();
+        ArrayList<Attendance> atts = atDB.getGroupStatus(raw_gid);
+        req.setAttribute("atts", atts);
 
-        req.getRequestDispatcher("../view/student/StudentAttendanceReport.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/instructor/groupAttendanceReport.jsp").forward(req, resp);
 
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         processRequest(req, resp, user);

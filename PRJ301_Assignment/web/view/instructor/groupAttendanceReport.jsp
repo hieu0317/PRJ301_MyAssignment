@@ -1,9 +1,10 @@
 <%-- 
-    Document   : StudentAttendanceReport
-    Created on : Mar 20, 2023, 1:23:46 PM
+    Document   : groupAttendanceReport
+    Created on : Mar 21, 2023, 12:12:18 AM
     Author     : admin
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/WeeklyTimetable.css">              
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/WeeklyTimetable.css"> 
     </head>
     <body>
         <div>
@@ -42,10 +43,6 @@
             </div>
         </div>                      
         <h1>Report</h1>
-        <a href="reportAttend?cid=1">JPD123</a> ,
-        <a href="reportAttend?cid=2">IOT102</a> ,
-        <a href="reportAttend?cid=3">MAS291</a> ,
-        <a href="reportAttend?cid=4">PRJ301</a>
         
         <c:if test="${requestScope.ses ne null}">
         <table>
@@ -54,69 +51,59 @@
                     No
                 </th>
                 <th>
-                    Date
+                    Group
                 </th>
                 <th>
-                    Slot
+                    Student Roll Number
                 </th>
                 <th>
-                    Room
+                    Student Name
                 </th>
+                <c:forEach items="${requestScope.ses}" var="ses" varStatus="loop">
+                    <th>
+                        Slot ${loop.index + 1}
+                    </th>
+                </c:forEach>
                 <th>
-                    Instructor
+                    Percent Absent
                 </th>
-                <th>
-                    Group Name
-                </th>
-                <th>
-                    Attendance Status
-                </th>
-                <th>
-                    Instructor's Comment
-                </th>
+                
                 
             </tr>
              
-                    <c:forEach items="${requestScope.ses}" var="ses" varStatus="loop">
+                    <c:forEach items="${requestScope.students}" var="s" varStatus="loop">
+                        <c:forEach items="${requestScope.s.groups}" var="gr">
                          <tr>
                             <td>
                                 ${loop.index + 1}
                             </td>
                             <td>
-                                ${ses.date}
+                                ${gr.gname}
                             </td>
                             <td>
-                                 ${ses.timeSlot.tid}
+                                 ${s.sRollNumber}
                             </td>
                             <td>
-                                 ${ses.room.rid}
+                                 ${s.lname} ${s.fname}
                             </td>
-                            <td>
-                                 ${ses.instructor.iname}
-                            </td>
-                            <td>
-                                 ${ses.group.gname}
-                            </td>
-                            <td>
-                                <c:if test="${ses.attendance.getStatus() eq null}">
-                                    <p>Future</p>
-                                </c:if >
-                                <c:if test="${ses.attendance.getStatus() ne null}">
-                                    <c:if test="${ses.attendance.getStatus()}">
-                                        <font color="green">(attended)</font>
+                            <c:set var="slot" value="0"/>
+                            <c:forEach items="${requestScope.atts}" var="atts">
+                                <c:if test="${s.sid eq atts.student.sid}">
+                                    <td> <c:set var="t" value="${atts.status}"/>
+                                        <span ${t eq  "absent" ? 'style="color: red"': t eq  "attended" ? 'style="color: green"': 'style="color: black"'}> ${atts.status eq null ? '-': atts.status eq "attended" ? 'P' : atts.status eq "absent" ? 'A':''}</span></td>
+                                        <c:if test="${atts.status eq 'absent'}">
+                                            <c:set var="p" value="${p+1}"/>
+                                        </c:if>
                                     </c:if>
-                                    <c:if test="${ses.attendance.getStatus() eq false}">
-                                        <font color="red">(absent)</font>
-                                    </c:if>
-                                </c:if>
-                            </td>
+                            </c:forEach>
+                            <c:set var="size" value="${requestScope.ses.size()}"/>
+                            <fmt:formatNumber var="aa" value="${p/size*100}" pattern="##"/>
                             <td>
-                                 ${ses.attendance.description}
-                            </td>
-                        </tr>   
+                                 ${aa gt 10 ? 'style="color:red"':''} >${aa}%
+                            </td>         
+                        </tr>
+                        </c:forEach>
                     </c:forEach>   
-           
-
         </table>
         </c:if>
         <div class="rooter">
@@ -126,4 +113,5 @@
         </div>
     
     </body>
+    
 </html>
