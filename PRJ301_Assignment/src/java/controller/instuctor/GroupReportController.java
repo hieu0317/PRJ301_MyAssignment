@@ -27,8 +27,12 @@ public class GroupReportController extends BasedRequiredTeacherAuthenticationCon
     
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp, User user)
             throws ServletException, IOException {
-        int raw_gid = Integer.parseInt(req.getParameter("gid"));
-        
+        HttpSession session = req.getSession();
+        User u = (User) session.getAttribute("user");
+        int raw_gid = u.getInstructor().getiId();
+        if(raw_gid == 4){
+            raw_gid += 1;
+        }
         SessionDBContext sesDB = new SessionDBContext();
         ArrayList<Session> sessions = sesDB.getAllByGroupID(raw_gid);
         req.setAttribute("ses", sessions);

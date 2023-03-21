@@ -44,7 +44,7 @@
         </div>                      
         <h1>Report</h1>
         
-        <c:if test="${requestScope.ses ne null}">
+    
         <table>
             <tr>
                 <th>
@@ -72,7 +72,7 @@
             </tr>
              
                     <c:forEach items="${requestScope.students}" var="s" varStatus="loop">
-                        <c:forEach items="${requestScope.s.groups}" var="gr">
+                        <c:forEach items="${s.groups}" var="gr">
                          <tr>
                             <td>
                                 ${loop.index + 1}
@@ -90,7 +90,7 @@
                             <c:forEach items="${requestScope.atts}" var="atts">
                                 <c:if test="${s.sid eq atts.student.sid}">
                                     <td> <c:set var="t" value="${atts.status}"/>
-                                        <span ${t eq  "absent" ? 'style="color: red"': t eq  "attended" ? 'style="color: green"': 'style="color: black"'}> ${atts.status eq null ? '-': atts.status eq "attended" ? 'P' : atts.status eq "absent" ? 'A':''}</span></td>
+                                        <span ${t eq  "absent" ? 'style="color: red"': t eq  "attended" ? 'style="color: green"': 'style="color: black"'}> ${atts.status eq null ? '-': atts.status ? 'Present' : !atts.status ? 'Absent':''}</span></td>
                                         <c:if test="${atts.status eq 'absent'}">
                                             <c:set var="p" value="${p+1}"/>
                                         </c:if>
@@ -99,13 +99,12 @@
                             <c:set var="size" value="${requestScope.ses.size()}"/>
                             <fmt:formatNumber var="aa" value="${p/size*100}" pattern="##"/>
                             <td>
-                                 ${aa gt 10 ? 'style="color:red"':''} >${aa}%
+                                ${aa}%
                             </td>         
                         </tr>
                         </c:forEach>
                     </c:forEach>   
         </table>
-        </c:if>
         <div class="rooter">
             <p> Mọi góp ý, thắc mắc xin liên hệ: Phòng dịch vụ sinh viên: Email: <span>dichvusinhvien@fe.edu.vn.</span> Điện
                 thoại: <span class="PhoneNumber">(024)7308.13.13</span></p>
