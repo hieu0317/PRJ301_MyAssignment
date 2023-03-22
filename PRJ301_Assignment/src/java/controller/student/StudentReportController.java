@@ -29,13 +29,19 @@ public class StudentReportController extends BasedRequiredAuthenticationControll
             throws ServletException, IOException {
         HttpSession session = req.getSession();
         User u = (User) session.getAttribute("user");
-        int cid_raw = Integer.parseInt(req.getParameter("cid"));
+        String cid = req.getParameter("cid");
+        int raw_cid;
+        if(cid == null){
+            raw_cid = 0;
+        }else{
+            raw_cid = Integer.parseInt(cid);
+        }
    
         StudentDBContext stuDB = new StudentDBContext();
         SessionDBContext sesDB = new SessionDBContext();
         Student student = stuDB.get(user.getStudent().getSid());
         req.setAttribute("student", student);
-        ArrayList<Session> sessions = sesDB.getCourseReport(user.getStudent().getSid(), cid_raw);
+        ArrayList<Session> sessions = sesDB.getCourseReport(user.getStudent().getSid(), raw_cid);
         req.setAttribute("ses", sessions);
 
         req.getRequestDispatcher("../view/student/StudentAttendanceReport.jsp").forward(req, resp);
